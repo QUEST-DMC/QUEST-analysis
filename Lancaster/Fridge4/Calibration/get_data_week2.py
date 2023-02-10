@@ -1,0 +1,41 @@
+import numpy
+import math
+import matplotlib.pyplot as plt
+
+import sys
+sys.path.insert(1, '/Users/tinekesalmon/Documents/fridge4_bolometer_calibration/scripts/graphene')
+import graphene
+graphene.set_source('xyz_f4')
+graphene.set_cache('data')
+
+# time in unix timestamps as the graphene code did not understand the date function on my PC
+#t1='2023-02-09 21:00:00'
+t1=1675976400
+#t2='2023-02-10 02:00:00'
+t2=1675994400
+t0=1675976400
+
+n=0
+for cell in (1, 2):
+  # heater wire name 
+  nnh = 'w%dbh'%(cell)
+  # thermometer wire name 
+  nnt = 'w%dbt'%(cell)
+
+  # heater data
+
+  # + '_sweeps' gives raw data. just wire name (i.e. nnh) gives fitting results
+  h_data = graphene.get_range(nnh + '_sweeps', t1,t2)
+  #_dbox:f1 gives the filter 1 of dbox which is the conversion factor between the drive generator voltage (V) and drive current (A)
+  h_Rbox, h_att = graphene.get_prev(nnh + '_dbox:f1', t1, unpack=1, usecols=(1,2))
+
+  # thermometer
+  t_data= graphene.get_range(nnt + '_sweeps', t1, t2)
+  (t_time, t_temp) = graphene.get_range(nnt+':f1', t1,t2, usecols=(0,1), unpack=1)
+  t_Rbox, t_att = graphene.get_prev(nnt + '_dbox:f1', t1, unpack=1, usecols=(1,2))
+
+
+
+ 
+
+

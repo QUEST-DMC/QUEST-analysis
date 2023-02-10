@@ -241,3 +241,54 @@ plt.title('Peak 2: Temperature against power of bolometer 1 (2023-01-18 17:25_20
 plt.show()
 
 # %%
+
+#need to find width parameter = width*temp
+#plots width parameter vs. power for peak 1 
+
+
+width_parameter = w1bt_width*w1bt_temp
+
+# polynomial fit of x against y, 1st order polynomial
+zw =np.polyfit(h_pwr_interp[0:1374]*1e12, width_parameter[0:1374]-p0_slope(xp3), 1)
+pw= np.poly1d(zw)
+# creates a linspace suitable for the length of the displayed fit line
+xpw = np.linspace(0.2, 6.7, 1715)
+
+# [grad] = uK/pW, e-6/e-12 = e6 
+# grad *e6 to get K/W
+gradw = pw[1]*1e6
+K_Tw=1/gradw # in W/K
+print('K_Tw', K_Tw)
+
+plt.figure(8)
+plt.plot(h_pwr_interp[0:1374]*1e12, width_parameter[0:1374]-p0_slope(xp3), '.', xpw, pw(xpw))
+plt.xlabel("w1bh [pW]")
+plt.ylabel("width parameter - temperature slope ")
+plt.title('Peak 1: Width Parameter against power of bolometer 1 (2023-01-18 17:25_2023-01-18 18:10)')
+plt.show()
+
+# %%
+#plots width parameter vs. power for peak 2
+# second peak width parameter
+
+xp5 = np.linspace(w1bt_time[1374]-w1bt_time[0], w1bt_time[-1]-w1bt_time[0], 1121)
+# polynomial fit of x against y, 1st order polynomial peak 2
+zw2 =np.polyfit(h_pwr_interp[1374:-1]*1e12, width_parameter[1374:-1]-p0_slope(xp5), 1)
+pw2= np.poly1d(zw2)
+# creates a linspace suitable for the length of the displayed fit line
+xpw2 = np.linspace(0.2, 6.66, 1715)
+
+# [grad] = uK/pW, e-6/e-12 = e6 
+# grad *e6 to get K/W
+gradw2 = pw2[1]*1e6
+K_Tw2=1/gradw2 # in W/K
+print('K_Tw2', K_Tw2)
+
+plt.figure(9)
+plt.plot(h_pwr_interp[1374:-1]*1e12, width_parameter[1374:-1]-p0_slope(xp5), '.', xpw2, pw2(xpw2))
+plt.xlabel("w1bh [pW]")
+plt.ylabel("Width Parameter - temperature slope ")
+plt.title('Peak 2: Width Parameter against power of bolometer 1 (2023-01-18 17:25_2023-01-18 18:10)')
+plt.show()
+
+# %%

@@ -3,7 +3,7 @@ import math
 import matplotlib.pyplot as plt
 
 import sys
-sys.path.insert(1, '/Users/tinekesalmon/Documents/fridge4_bolometer_calibration/scripts/py')
+sys.path.insert(1, '/Users/tinekesalmon/exp_py/py')
 import graphene002 as graphene
 graphene.set_source('xyz_f4')
 import f4wire001 as f4wire

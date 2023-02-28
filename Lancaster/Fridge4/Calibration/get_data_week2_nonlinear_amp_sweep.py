@@ -22,7 +22,6 @@ for cell in (1, 2):
   nnt = 'w%dbt'%(cell)
 
   # heater data
-
   # + '_sweeps' gives raw data. just wire name (i.e. nnh) gives fitting results
   h_data = graphene.get_range(nnh, t1,t2)
   #_dbox:f1 gives the filter 1 of dbox which is the conversion factor between the drive generator voltage (V) and drive current (A)

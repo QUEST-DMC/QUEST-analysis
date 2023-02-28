@@ -13,6 +13,8 @@ import f4wire001 as f4wire
 t1=1675988640
 t2=1675989120
 
+print(f4wire.wire_dim('w1bt'))
+
 n=0
 for cell in (1, 2):
   # wire name 

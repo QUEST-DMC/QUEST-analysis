@@ -80,26 +80,27 @@ print(type(temp_smalldrive))
 #%%# - find velocities less than pair breaking velocity
 # function will not fit after pair breaking up tick
 # pair breaking at 8.5 mm/s = 0.0085 m/s
-vel_85=vel[vel < 0.0085]
+vel_pairbreaking=0.0075
+vel_before_pairbreaking=vel[vel < vel_pairbreaking]
 
 # find indices of the velocities below pair breaking 
-vel_85_indices=[]
+vel_before_pairbreaking_indices=[]
 
 # for index, value in vel_85.items():
 #     print(f"Index : {index}, Value : {value}")
-for index , value in vel_85.items():
-    vel_85_indices.append(index)
+for index , value in vel_before_pairbreaking.items():
+    vel_before_pairbreaking_indices.append(index)
 
 # get forces corresponding to indices of velocities below pair breaking 
 # make an empty list
-force_85=[]
+force_before_pairbreaking=[]
 
 # append the values of force that correspond with the indices of the velocities below pair breaking 
-for index in vel_85_indices:
-    force_85.append(force.loc[index])
+for index in vel_before_pairbreaking_indices:
+    force_before_pairbreaking.append(force.loc[index])
 
 # convert forces below 8.5 mm/s from list into pandas series
-force_85 = pd.Series(data=force_85, index=vel_85_indices) 
+force_before_pairbreaking = pd.Series(data=force_before_pairbreaking, index=vel_before_pairbreaking_indices) 
 
 # for index, value in force_85.items():
 #     print(f"Index : {index}, Value : {value}")
@@ -139,21 +140,21 @@ plt.show()
 
 from scipy.optimize import curve_fit
 
-def fit_function(vel_85,C,lambda_1):
+def fit_function(vel_before_pairbreaking,C,lambda_1):
     # Eq 1 from Paolo's note 
-    force_func_v = length * C * diameter * np.pi * 0.25 * p_F * v_F * N0 * np.exp(-gap/(k_B*T)) * (1-np.exp((-lambda_1*p_F*vel_85)/(k_B*T)))*k_B*T
+    force_func_v = length * C * diameter * np.pi * 0.25 * p_F * v_F * N0 * np.exp(-gap/(k_B*T)) * (1-np.exp((-lambda_1*p_F*vel_before_pairbreaking)/(k_B*T)))*k_B*T
     return force_func_v
     
-popt, pcov = curve_fit(fit_function, vel_85, force_85)
+popt, pcov = curve_fit(fit_function, vel_before_pairbreaking, force_before_pairbreaking)
 
 C,lambda_1 = popt
 
 plt.figure(3)
 plt.plot(vel,force, '.', label='Data')
-plt.plot(vel_85, fit_function(vel_85,*popt), label='Fitting function')
+plt.plot(vel_before_pairbreaking, fit_function(vel_before_pairbreaking,*popt), label='Fitting function C= %0.3f' %C + ', lambda= %0.3f' %lambda_1)
 plt.xlabel('Velocity (m/s)')
 plt.ylabel('Force (N)')
-plt.title('Force Velocity Eq Fri Feb 10 2023 00:24:00 to 00:32:00')
+plt.title('Force Velocity Eq Fri Feb 10 2023 00:24:00 to 00:32:00 v_pairbreaking = %0.4f'%vel_pairbreaking +'mm/s')
 plt.legend()
 plt.show()
 

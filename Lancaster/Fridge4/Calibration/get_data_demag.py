@@ -17,5 +17,7 @@ t0=1675988640
 # demag_pc:f2 # magnetic field 
 # demag_pc:f1 # current of solenoid 
 
-mag = graphene.get_wrange('demag_pc:f2',t1,t2)
+#mag = graphene.get_wrange('demag_pc:f2',t1,t2)
+graphene.get_prev('demag_pc:f2',t1)
+
 

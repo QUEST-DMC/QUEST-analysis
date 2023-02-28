@@ -157,6 +157,8 @@ plt.title('Force Velocity Eq Fri Feb 10 2023 00:24:00 to 00:32:00')
 plt.legend()
 plt.show()
 
+print('C', C)
+print('lambda', lambda_1)
 # # fitting parameters to manually adjust
 # C = 3e9
 # lambda_1 = 0.05
